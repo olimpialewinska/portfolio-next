@@ -10,7 +10,7 @@ function Mynavbar() {
           <Nav className="me-auto"></Nav>
           <Nav>
           <Nav.Link href="/gallery">Galeria</Nav.Link>
-            <Nav.Link href="/kontakt">Kontakt</Nav.Link>
+            <Nav.Link href="/contact">Kontakt</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

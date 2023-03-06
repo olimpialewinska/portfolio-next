@@ -101,3 +101,26 @@ export const ButtonImage = styled.div`
     transform: translateX(6px);
   }
 `;
+
+export const ContentGrid = styled.div`
+  padding: 8px;
+  max-width: 1024px;
+  margin: 128px auto;
+
+  @media (max-width: 1024px) {
+    padding: 16px !important;
+  }
+`;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 24px;
+  text-align: center;
+  flex: 1;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(1, 1fr) !important;
+    padding: 4px !important;
+  }
+`;

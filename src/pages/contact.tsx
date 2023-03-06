@@ -1,7 +1,11 @@
 import { Contact } from "@/components/Contact";
+import Mynavbar from "@/components/Navbar";
 
 export default function ContactPage() {
-    return (
-       <Contact/>
-    );
+  return (
+    <>
+      <Mynavbar />
+      <Contact />
+    </>
+  );
 }
