@@ -19,6 +19,8 @@ interface EditModalProps {
 }
 
 function EditModal(props: EditModalProps) {
+  const [text, setText] = useState(props.text);
+
   return (
     <Bg
       style={{
@@ -35,10 +37,40 @@ function EditModal(props: EditModalProps) {
         <Layout>
           <Title>Edytuj opis</Title>
           <Form>
-            <TextArea value={props.text}></TextArea>
+            <TextArea
+            defaultValue={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                console.log(e.target.value);
+              }}
+            >
+             
+            </TextArea>
             <Buttons>
               <Blue onClick={props.hide}>Anuluj</Blue>
-              <Green>Zapisz</Green>
+              <Green
+                onClick={ 
+                  async () => {
+                  const response = await fetch(
+                    `/api/dashboard/photos/${props.id}`,
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        text: text,
+                      }),
+                    }
+                  );
+                  if (response.status === 200) {
+                    props.hide();
+                    alert("Zaaktualizowano opis!")
+                  }
+                }}
+              >
+                Zapisz
+              </Green>
             </Buttons>
           </Form>
         </Layout>

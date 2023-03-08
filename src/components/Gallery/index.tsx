@@ -1,8 +1,10 @@
 import { MyModal } from "@/components/Modal/Modal";
 import { CATEGORIES } from "../../constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Gridelement } from "../GridElement";
 import { Button, GalleryButtons, GalleryGrid, Header } from "./style";
+
+
 
 export function Gallery() {
   const [show, setShow] = useState(false);
@@ -15,6 +17,21 @@ export function Gallery() {
     setCurrentImage(image);
     setShow(true);
   };
+
+  useEffect(() => {
+    const load = async () => {
+      const data = await (await fetch(`/api/gallery/${currentCategory}`)).json();
+      const urls = data.urls.map((data: { url: any; category: any }) => {
+        return {
+          url: data.url,
+          category: data.category,
+        };
+      });
+      setImageUrls(urls);
+    };
+
+    load();
+  }, [currentCategory]);
 
   interface CategoryProps {
     name: string;
@@ -44,49 +61,21 @@ export function Gallery() {
         })}
       </GalleryButtons>
       <GalleryGrid>
-      <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />{" "}
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
-        <Gridelement
-          image={"5.jpeg"}
-          text={"aaa"}
-          showImage={handleShow}
-          borderRadius="8px"
-        />
+      {imageUrls.map((image: {
+            url: string;
+            category: string;
 
+          }, i) => {
+            return (
+              <Gridelement
+                key={i}
+                image={image.url}
+                text={image.category}
+                showImage={handleShow}
+                borderRadius="0"
+              />
+            );
+          })}
       </GalleryGrid>
       
 

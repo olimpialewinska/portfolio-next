@@ -1,5 +1,5 @@
 import { MyModal } from "@/components/Modal/Modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../Card";
 import { Footer } from "../Footer";
 import { Gridelement } from "../GridElement";
@@ -21,6 +21,21 @@ export function Index() {
   const [show, setShow] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      const data = await (await fetch(`/api/homeSixPhotos`)).json();
+      const urls = data.urls.map((data: { url: any; category: any }) => {
+        return {
+          url: data.url,
+          category: data.category,
+        };
+      });
+      setImageUrls(urls);
+    };
+
+    load();
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (image: React.SetStateAction<string>) => () => {
@@ -50,42 +65,21 @@ export function Index() {
 
       <ContentGrid>
         <GridContainer>
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />{" "}
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />{" "}
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />{" "}
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />{" "}
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />{" "}
-          <Gridelement
-            image="/5.jpeg"
-            text="Image"
-            showImage={handleShow}
-            borderRadius="0"
-          />
+          {imageUrls.map((image: {
+            url: string;
+            category: string;
+
+          }, i) => {
+            return (
+              <Gridelement
+                key={i}
+                image={image.url}
+                text={image.category}
+                showImage={handleShow}
+                borderRadius="0"
+              />
+            );
+          })}
         </GridContainer>
       </ContentGrid>
       <MyModal visible={show} hide={handleClose} image={currentImage} />
@@ -93,9 +87,9 @@ export function Index() {
       <IndexContainer>
         <IndexCard>
           <WrapperMain>
-          <Card height="400px" image="10.jpeg" borderRadius={"50%"} />
+            <Card height="400px" image="10.jpeg" borderRadius={"50%"} />
             <Content>
-            <h1>O mnie</h1>
+              <h1>O mnie</h1>
               <div>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Quisquam voluptates, quod, quia, voluptate quae quidem
@@ -113,7 +107,7 @@ export function Index() {
         </IndexCard>
       </IndexContainer>
 
-      <Footer/>
+      <Footer />
     </>
   );
 }

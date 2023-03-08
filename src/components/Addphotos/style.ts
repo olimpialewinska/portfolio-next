@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+
+
 export const Layout = styled.div`
   width: 100%;
   display: flex;
@@ -116,6 +118,17 @@ export const Title = styled.h2`
     text-align: center;
     text-transform: uppercase;
     
+`;
+
+export const Select = styled.select`
+background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 90%;`;
+
+export const Option = styled.option`
 `;
 
 

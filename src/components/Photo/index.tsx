@@ -1,42 +1,55 @@
 import { url } from "inspector";
 import { useState } from "react";
+import { ImageModel } from "../DashboardView";
 import { EditModal } from "../EditModal";
 import { Row, Image, Text, ActionButtons, Delete, Edit } from "./style";
 
 interface RowProps {
-  image: string;
-  text: string;
-    id: string;
+  image: ImageModel;
+  deleteImage: (id: string) => void;
 }
 
-export function Photo(props: RowProps) {
-    const [show, setShow] = useState(false);
+export function Photo({ image, deleteImage }: RowProps) {
+  const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = (image: string) => () => {
-      setShow(true);
-    };
+  const handleClose = () => setShow(false);
+  const handleShow = (image: string) => () => {
+    setShow(true);
+  };
   return (
     <>
       <Row>
         <Image
           alt="zdjęcie"
           style={{
-            backgroundImage: `url(${props.image})`,
+            backgroundImage: `url(${image.url})`,
           }}
         />
-        <Text>aaaa</Text>
+        <Text>{image.description}</Text>
         <ActionButtons>
-            <Edit onClick={handleShow(props.text)}/>
-            <Delete/>
+          <Edit onClick={handleShow(image.description)} />
+          <Delete
+            onClick={ 
+              async () => {
+              const response = await fetch(
+                `/api/dashboard/photos/${image.id}?name=${image.name}&category=${image.category}`,
+                {
+                  method: "DELETE",
+                }
+              );
+              if (response.status === 200) {
+                deleteImage(image.id);
+              }
+            }}
+          />
         </ActionButtons>
       </Row>
 
       <EditModal
         visible={show}
         hide={handleClose}
-        text={props.text}
-        id={props.id}
+        text={image.description}
+        id={image.id}
       />
     </>
   );
